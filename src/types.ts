@@ -8,3 +8,10 @@ export type ProductType = {
     colors:string[];
     images:Record<string,string>;
 }
+
+export type CartItemType =ProductType &{
+    quantity:number,
+    size:string,
+    color:string
+
+}
