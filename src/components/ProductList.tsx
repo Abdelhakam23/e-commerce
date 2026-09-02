@@ -1,8 +1,10 @@
 import { ProductType } from "@/types";
 import Categories from "./Categories";
 import ProductCard from "./ProductCard";
+import Link from "next/link";
+import Filter from "./Filter";
 
-const products:ProductType[] = [
+const products: ProductType[] = [
   {
     id: 1,
     name: "Adidas CoreFit T-Shirt",
@@ -113,16 +115,33 @@ const products:ProductType[] = [
   },
 ];
 
-const ProductList = () => {
-  return <div>
+const ProductList = ({
+  category,
+  params,
+}: {
+  category: string;
+  params: "homePage" | "productsPage";
+}) => {
+  return (
+    <div>
+      <Categories />
 
-    <Categories/>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-12">
+      {params === "productsPage" && <Filter />}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-12">
         {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
+      </div>
+      {params === "homePage" && (
+        <Link
+          className="flex items-center justify-end mt-5 text-gray-500 underline hover:text-gray-700 transition-colors duration-300 text-sm font-medium"
+          href={category ? `/products/?category=${category}` : "/products"}
+        >
+          View All Products
+        </Link>
+      )}
     </div>
-  </div>;
+  );
 };
 
 export default ProductList;

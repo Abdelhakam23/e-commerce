@@ -68,7 +68,7 @@ const Categories = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 mb-4 text-sm bg-gray-100 p-2 rounded-lg ">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 mb-4 text-sm bg-gray-100 p-2 rounded-lg mt-5 ">
       {categories.map((category) => (
         <div
           key={category.name}
