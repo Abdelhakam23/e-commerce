@@ -4,15 +4,33 @@ import { ProductType } from "@/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
+  const [productType, setProductType] = useState({
+    size: product.sizes[0],
+    color: product.colors[0],
+  });
+
+  const handleType = ({
+    type,
+    value,
+  }: {
+    type: "size" | "color";
+    value: string;
+  }) => {
+    setProductType((prev) => ({
+      ...prev,
+      [type]: value,
+    }));
+  };
   return (
     <div className="shadow-lg rounded-lg overflow-hidden">
       {/* Image */}
       <Link href={`/product/${product.id}`}>
         <div className="relative aspect-2/3 ">
           <Image
-            src={product.images[product.colors[0]]}
+            src={product.images[productType.color]}
             alt={product.name}
             className="object-cover hover:scale-105 transition-transform duration-300"
             fill
@@ -36,6 +54,9 @@ const ProductCard = ({ product }: { product: ProductType }) => {
               name="size"
               id="size"
               className="ring-1 ring-gray-300 rounded-md px-2 py-1"
+              onChange={(e) =>
+                handleType({ type: "size", value: e.target.value })
+              }
             >
               {product.sizes.map((size) => (
                 <option key={size} value={size}>
@@ -51,11 +72,16 @@ const ProductCard = ({ product }: { product: ProductType }) => {
               {product.colors.map((color) => (
                 <div
                   key={color}
-                  className="w-3.5 h-3.5 rounded-full "
-                  style={{
-                    backgroundColor: color,
-                  }}
-                />
+                  onClick={() => handleType({ type: "color", value: color })}
+                  className={`cursor-pointer border rounded-full p-[1.2px] flex items-center justify-center align-middle ${productType.color === color ? "border-gray-500" : "border-gray-200"} transition-colors duration-300`}
+                >
+                  <div
+                    className="w-3.5 h-3.5 rounded-full "
+                    style={{
+                      backgroundColor: color,
+                    }}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -63,12 +89,10 @@ const ProductCard = ({ product }: { product: ProductType }) => {
 
         {/* Price And Add To Cart */}
         <div className="flex items-center justify-between ">
-          <p className="font-medium">
-            ${product.price.toFixed(2)}
-          </p>
+          <p className="font-medium">${product.price.toFixed(2)}</p>
 
           <button className="cursor-pointer ring-1 ring-gray-200 px-2 py-1 rounded-md text-sm shadow-lg hover:text-white hover:bg-black transition-colors duration-300 flex items-center gap-2">
-            <ShoppingCart className="w-4 h-4"/>
+            <ShoppingCart className="w-4 h-4" />
             Add To Cart
           </button>
         </div>
